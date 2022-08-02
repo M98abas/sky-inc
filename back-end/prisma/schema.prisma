@@ -1,0 +1,138 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
+}
+
+datasource db {
+  provider             = "mysql"
+  url                  = env("DATABASE_URL")
+  referentialIntegrity = "prisma"
+}
+
+// admin Table
+model Admin {
+  id Int @id @default(autoincrement())
+  name String
+  email String @unique
+  password String
+  otp Int @default(111111)
+  permission String @default("User")
+  created_at DateTime @default(now())
+}
+
+// Supwe Admin Table
+model SuperAdmin{
+  id Int @id @default(autoincrement())
+  email String @unique
+  name String
+  password String
+  otp Int @default(111111)
+  created_at DateTime @default(now())
+
+}
+
+// Users Table
+model Users{
+  id String @id @default(uuid())
+  name String
+  email String @unique
+  password String
+  address String
+  phone String
+  otp Int @default(111111)
+  active Boolean @default(true)
+  usersServices UsersServices[]
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+  payment Payments[] 
+}
+
+// payments Table
+model Payments{
+  id Int @id @default(autoincrement())
+  token String
+  numberCard String?
+  userId String 
+  user Users @relation(fields: [userId],references: [id])
+  created_at DateTime @default(now())
+  payment_status String
+
+}
+
+model Category{
+  id Int @id @default(autoincrement())
+  name String
+  description String
+  subCategory SubCategory[]
+
+}
+
+model SubCategory{
+  id Int @id @default(autoincrement())
+  name String
+  description String
+  categoryId Int
+  category Category @relation(fields:[categoryId], references:[id])
+  active Boolean @default(true)
+  services Services[]
+
+}
+
+model Services{
+  id Int @id @default(autoincrement())
+  title String
+  description String
+  price Decimal @db.Decimal(9,2)
+  discount Int @default(0)
+  created_at DateTime @default(now())
+  images String
+  developerId Int
+  developer Developer @relation( fields:[developerId], references: [id])
+  usersServices UsersServices[]
+  subCategoryId Int
+  subCategory SubCategory @relation( fields:[subCategoryId], references: [id])
+}
+
+model Developer{
+  id Int @id @default(autoincrement())
+  name String
+  email String
+  password String
+  address String
+  phone String
+  services Services[]
+  otp Int @default(111111)
+  gitHubProfile String
+  skills Skills[]
+  socialMedia Social[]
+}
+
+model Social{
+  id Int @id @default(autoincrement())
+  title String
+  links String
+  active Boolean @default(true)
+  developerId Int
+  developer Developer @relation( fields:[developerId], references: [id])
+
+}
+
+model Skills{
+  id Int @id @default(autoincrement())
+  title String
+  description String
+  projectLink String
+  developerId Int 
+  developer Developer @relation( fields:[developerId], references: [id])
+  created_at DateTime @default(now())
+
+}
+
+model UsersServices{
+  id Int @id @default(autoincrement())
+  serviceId Int
+  service Services @relation( fields:[serviceId], references: [id])
+  usersId String 
+  users Users @relation( fields:[usersId], references: [id])
+  
+}
