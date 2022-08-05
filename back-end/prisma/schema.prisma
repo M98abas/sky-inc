@@ -15,20 +15,19 @@ model Admin {
   name String
   email String @unique
   password String
+  phoneNumber String @unique
   otp Int @default(111111)
   permission String @default("User")
   created_at DateTime @default(now())
 }
 
-// Supwe Admin Table
+// Super Admin Table
 model SuperAdmin{
   id Int @id @default(autoincrement())
   email String @unique
   name String
   password String
-  otp Int @default(111111)
   created_at DateTime @default(now())
-
 }
 
 // Users Table
@@ -38,7 +37,8 @@ model Users{
   email String @unique
   password String
   address String
-  phone String
+  phoneNumber String @unique
+  verified Boolean @default(false)
   otp Int @default(111111)
   active Boolean @default(true)
   usersServices UsersServices[]
