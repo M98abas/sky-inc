@@ -114,40 +114,6 @@ export default class UsersController {
     }
   }
 
-  static async validattionOtp(req: any, res: any) {
-    try {
-      // get body
-      const body = req.body;
-      // validate body
-      const notValidate = validate(body, Validation.otp());
-      if (notValidate) return errRes(res, { msg: "There is no Data" });
-      // get user
-      let user: any = req.user;
-      // compare Between otp entered and stored
-      if (body.otp !== user.otp) {
-        // Regenerate & save OTP
-        user = await prisma.users.update({
-          where: { email: user.email },
-          data: {
-            otp: getOtp(),
-            verified: false,
-          },
-        });
-
-        return errRes(res, { msg: "OTP is not correct" });
-      }
-      user = await prisma.users.update({
-        where: { email: user.email },
-        data: {
-          verified: true,
-        },
-      });
-      return okRes(res, { msg: "User Verified successfully" });
-    } catch (err) {
-      return errRes(res, `Something went wrong ${err}`);
-    }
-  }
-
   /**
    *
    * @param req
@@ -165,12 +131,16 @@ export default class UsersController {
         return errRes(res, { msg: "Please check the data you send." });
 
       // Get the user from DB
-      const user: any = await prisma.users.findMany({
+      let user: any = await prisma.users.findMany({
         where: {
           active: true,
           email: body.email,
         },
       });
+
+      // check if OTP is correct
+      if (body.otp !== user.otp) errRes(res, "User Not found");
+
       // check f the user exists and active account
       if (user.length === 1) return errRes(res, "User Not found");
       else if (user.length === 0)
@@ -183,6 +153,13 @@ export default class UsersController {
           msg: "the password that you entered is wrong, please try again",
         });
 
+      // update data in DB
+      user = await prisma.admin.update({
+        where: { email: user.email },
+        data: {
+          verified: true,
+        },
+      });
       // create the Token
       let token = jwt.sign({ email: body.email }, CONFIG.jwtUserSecret);
       return okRes(res, { token, verified: user.verified });

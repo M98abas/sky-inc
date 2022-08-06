@@ -20,6 +20,7 @@ model Admin {
   verified Boolean @default(false)
   permission String @default("User")
   created_at DateTime @default(now())
+  active Boolean @default(true)
 }
 
 // Super Admin Table
@@ -29,6 +30,8 @@ model SuperAdmin{
   name String
   password String
   created_at DateTime @default(now())
+  otp Int @default(1111)
+
 }
 
 // Users Table

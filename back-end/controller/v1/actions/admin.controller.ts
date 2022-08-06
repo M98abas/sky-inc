@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import { errRes, getOtp, okRes } from "../../utils/util.services";
+import { errRes, getOtp, okRes } from "../../../utils/util.services";
 import { validate } from "validate.js";
-import Validation from "../../utils/validation";
+import Validation from "../../../utils/validation";
 import bcrypt from "bcrypt";
-import CONFIG from "../../config";
+import CONFIG from "../../../config";
 import * as jwt from "jsonwebtoken";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
@@ -73,41 +73,7 @@ export default class AdminController {
       return errRes(res, `Something went wrong ${err}`);
     }
   }
-
-  static async validattionOtp(req: any, res: any) {
-    try {
-      // get body
-      const body = req.body;
-      // validate body
-      const notValidate = validate(body, Validation.otp());
-      if (notValidate) return errRes(res, "There is no Data");
-      // get user
-      let user: any = req.user;
-      // compare Between otp entered and stored
-      if (body.otp !== user.otp) {
-        // Regenerate & save OTP
-        user = await prisma.admin.update({
-          where: { email: user.email },
-          data: {
-            otp: getOtp(),
-            verified: false,
-          },
-        });
-
-        return errRes(res, "OTP is not correct");
-      }
-      user = await prisma.admin.update({
-        where: { email: user.email },
-        data: {
-          verified: true,
-        },
-      });
-      return okRes(res, { msg: "User Verified successfully" });
-    } catch (err) {
-      return errRes(res, `Something went wrong ${err}`);
-    }
-  }
-
+  
   /**
    *
    * @param req
@@ -124,7 +90,7 @@ export default class AdminController {
       if (notValide) return errRes(res, "Please check the data you send.");
 
       // Get the user from DB
-      const user: any = await prisma.admin.findUnique({
+      let user: any = await prisma.admin.findUnique({
         where: {
           email: body.email,
         },
@@ -139,9 +105,79 @@ export default class AdminController {
           "the password that you entered is wrong, please try again"
         );
 
+      // check if OTP is correct
+      if (body.otp !== user.otp) errRes(res, "User Not found");
+
+      // update data in DB
+      user = await prisma.admin.update({
+        where: { email: user.email },
+        data: {
+          verified: true,
+        },
+      });
+
       // create the Token
       let token = jwt.sign({ email: body.email }, CONFIG.jwtUserSecret);
       return okRes(res, { token, verified: user.verified });
+    } catch (err) {
+      return errRes(res, `Something went wrong ${err}`);
+    }
+  }
+  /**
+   *
+   * @param req
+   * @param res
+   * @param
+   */
+  static async update(req: Request, res: Response): Promise<object> {
+    try {
+      // get body data
+      const body = req.body;
+      const id = req.params.id;
+      // validate data
+      const notValide = validate(body, Validation.register(false));
+      if (notValide) return errRes(res, { msg: "Data not valid" });
+      // update data
+      const data: any = await prisma.admin.update({
+        where: { id: parseInt(id) },
+        data: {
+          name: body.name,
+          email: body.email,
+          password: body.password,
+          phoneNumber: body.phoneNumber,
+          permission: body.permission,
+          otp: getOtp(),
+        },
+      });
+      return errRes(res, { data });
+    } catch (err) {
+      return errRes(res, `Something went wrong ${err}`);
+    }
+  }
+  /**
+   *
+   * @param req
+   * @param res
+   * @param
+   */
+  static async activate(req: Request, res: Response): Promise<object> {
+    try {
+      // get body data
+      const body = req.body;
+      const id = req.params.id;
+      // validate data
+      const notValide = validate(body, Validation.register(false));
+      if (notValide) return errRes(res, { msg: "Data not valid" });
+      // update data
+      const data: any = await prisma.admin.update({
+        where: { id: parseInt(id) },
+        data: {
+          active: body.active,
+          verified: body.verified,
+          otp: getOtp(),
+        },
+      });
+      return errRes(res, { data });
     } catch (err) {
       return errRes(res, `Something went wrong ${err}`);
     }

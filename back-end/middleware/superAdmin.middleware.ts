@@ -16,15 +16,9 @@ export default async (req: any, res: any, next: any) => {
     payload = jwt.verify(token, CONFIG.jwtUserSecret);
 
     // Find the user and add to Request
-    let user: any = await prisma.admin.findUnique({
+    let user: any = await prisma.superAdmin.findUnique({
       where: { email: payload.email },
     });
-    if (user.length === 0) {
-      user = await prisma.superAdmin.findUnique({
-        where: { email: payload.email },
-      });
-      if (user.length === 0) return errRes(res, "You not allowed");
-    }
     // Add user data to request param
     req.user = user;
     return next();
