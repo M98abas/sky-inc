@@ -32,6 +32,6 @@ const okRes = (res: any, data: any, code = 200) => {
  *
  * @returns
  */
-const getOtp = () => Math.floor(100000 + Math.random() * 9000);
+const getOtp = () => Math.floor(100000 + Math.random() * 900000);
 
 export { okRes, errRes, getOtp };

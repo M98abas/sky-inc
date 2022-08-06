@@ -1,6 +1,6 @@
 export default class Validation {
   constructor(parameters: any) {}
-  static admin = (must = true) => ({
+  static register = (must = true) => ({
     name: {
       presence: must,
       type: "string",
@@ -18,7 +18,7 @@ export default class Validation {
       type: "string",
     },
     permission: {
-      presence: must,
+      presence: false,
       type: "string",
     },
   });
@@ -44,6 +44,12 @@ export default class Validation {
     password: {
       presence: must,
       type: "string",
+    },
+  });
+  static otp = (must = true) => ({
+    otp: {
+      presence: must,
+      type: "number",
     },
   });
 }

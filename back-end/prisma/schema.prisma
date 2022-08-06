@@ -17,6 +17,7 @@ model Admin {
   password String
   phoneNumber String @unique
   otp Int @default(111111)
+  verified Boolean @default(false)
   permission String @default("User")
   created_at DateTime @default(now())
 }
