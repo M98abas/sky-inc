@@ -1,4 +1,4 @@
-# Store & Services App (Al-Imara مشروع العمارة)
+# Store & Services App (Al-Emarah مشروع العمارة)
 
 ## You can use it for any purpose
 
