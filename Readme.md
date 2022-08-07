@@ -35,6 +35,6 @@ C. front-end 1%:
 
 - only UI/UX finished
 
----
+  ***
 
 Comming soon...
