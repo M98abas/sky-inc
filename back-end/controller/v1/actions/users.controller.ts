@@ -1,11 +1,11 @@
 import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
 import { validate } from "validate.js";
-import { errRes, getOtp, okRes } from "../../utils/util.services";
-import Validation from "../../utils/validation";
+import { errRes, getOtp, okRes } from "../../../utils/util.services";
+import Validation from "../../../utils/validation";
 import * as bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";
-import CONFIG from "../../config";
+import CONFIG from "../../../config";
 const prisma = new PrismaClient();
 
 export default class UsersController {
@@ -142,7 +142,7 @@ export default class UsersController {
       if (body.otp !== user.otp) errRes(res, "User Not found");
 
       // check f the user exists and active account
-      if (user.length === 1) return errRes(res, "User Not found");
+      if (user.length !== 1) return errRes(res, "User Not found");
       else if (user.length === 0)
         return errRes(res, "User account Not active ");
 

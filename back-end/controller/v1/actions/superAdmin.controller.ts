@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import { errRes, getOtp, okRes } from "../../utils/util.services";
+import { errRes, okRes } from "../../../utils/util.services";
 import { validate } from "validate.js";
-import Validation from "../../utils/validation";
+import Validation from "../../../utils/validation";
 import bcrypt from "bcrypt";
-import CONFIG from "../../config";
+import CONFIG from "../../../config";
 import * as jwt from "jsonwebtoken";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
