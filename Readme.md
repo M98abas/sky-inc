@@ -8,24 +8,22 @@ A. Database 80%
 
 B. Back-end 20%
 
-  - Super Admin Authentication
-  - Admin Authentication
-  - User Authentication
-  - Middleware
+- Super Admin Authentication
+- Admin Authentication
+- User Authentication
+- Middleware
 
 # Todo Today
 
 1. Category & subCategory:
 
    - CRUD operations, Done.
-   
+
    - Show all items in the category and subcategory.
 
-2. Services Operation [ToDo]: 
+2. Services Operation [ToDo]:
 
-    - CRUD operations
-
-
+   - CRUD operations
 
 3. Developer [ToDo}]:
 
@@ -35,6 +33,8 @@ B. Back-end 20%
 
 C. front-end 1%:
 
-  - only UI/UX finished
+- only UI/UX finished
+
+---
 
 Comming soon...
