@@ -4,6 +4,8 @@ import { PrismaClient } from "@prisma/client";
 import adminRouter from "../routers/actionsRgLg/admin.router";
 import superAdminRouter from "../routers/actionsRgLg/superAdmin.router";
 import usersRoutes from "../routers/actionsRgLg/users.router";
+import categoryRoutes from "../routers/web/category.router";
+import subCategoryRoutes from "../routers/web/subcategory.router";
 
 const prisma = new PrismaClient();
 // const express = require("express");
@@ -27,6 +29,12 @@ async function main() {
 
   // user Router
   app.use("/user", usersRoutes);
+
+  // Category Router
+  app.use("/category", categoryRoutes);
+
+  // Sub-Category Router
+  app.use("/sub-category", subCategoryRoutes);
 
   // Listen => Port
   app.listen(port, () => {

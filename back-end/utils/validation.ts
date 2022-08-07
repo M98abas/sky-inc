@@ -50,4 +50,18 @@ export default class Validation {
       type: "string",
     },
   });
+  static category = (must = true) => ({
+    name: {
+      presence: must,
+      type: "string",
+    },
+    description: {
+      presence: must,
+      type: "string",
+    },
+    imgUrl: {
+      presence: must,
+      type: "string",
+    },
+  });
 }
