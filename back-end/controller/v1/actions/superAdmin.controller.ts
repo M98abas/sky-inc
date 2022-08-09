@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { errRes, okRes } from "../../../utils/util.services";
+import { errRes, getOtp, okRes } from "../../../utils/util.services";
 import { validate } from "validate.js";
 import Validation from "../../../utils/validation";
 import bcrypt from "bcrypt";
@@ -92,5 +92,34 @@ export default class SuperAdminController {
     // create the Token
     let token = jwt.sign({ email: body.email }, CONFIG.jwtUserLoginSecret);
     return okRes(res, { token, verified: user.verified });
+  }
+  /**
+   *
+   * @param req
+   * @param res
+   * @param
+   */
+  static async update(req: Request, res: Response): Promise<object> {
+    try {
+      // get body data
+      const body = req.body;
+      const id: any = req.params.id;
+      // validate data
+      const notValide = validate(body, Validation.register(false));
+      if (notValide) return errRes(res, { msg: "Data not valid" });
+      // update data
+      const data: any = await prisma.superAdmin.update({
+        where: { id },
+        data: {
+          name: body.name,
+          email: body.email,
+          password: body.password,
+          otp: getOtp(),
+        },
+      });
+      return errRes(res, { data });
+    } catch (err) {
+      return errRes(res, `Something went wrong ${err}`);
+    }
   }
 }

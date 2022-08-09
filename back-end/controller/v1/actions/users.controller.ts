@@ -3,9 +3,10 @@ import { Request, Response } from "express";
 import { validate } from "validate.js";
 import { errRes, getOtp, okRes } from "../../../utils/util.services";
 import Validation from "../../../utils/validation";
-import * as bcrypt from "bcrypt";
+import bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";
 import CONFIG from "../../../config";
+
 const prisma = new PrismaClient();
 
 export default class UsersController {
@@ -76,26 +77,20 @@ export default class UsersController {
         where: { active: true, email: body.email },
       });
       // Check if Excist
-      if (user.length === 1) {
-        return errRes(res, "Email already exists, please try another one.");
+      if (!user) {
         // Check if there is no data
-      } else if (user.length === 0) {
-        return errRes(
-          res,
-          "Email not active, contact the administrator to re-activate it, thanks"
-        );
-      } else {
-        user = await prisma.users.create({
-          data: {
-            name: body.name,
-            email: body.email,
-            password: body.password,
-            address: body.address,
-            phoneNumber: body.phoneNumber,
-            otp,
-          },
-        });
+        return errRes(res, "Email already exists, please try another one.");
       }
+      user = await prisma.users.create({
+        data: {
+          name: body.name,
+          email: body.email,
+          password: body.password,
+          address: body.address,
+          phoneNumber: body.phoneNumber,
+          otp,
+        },
+      });
 
       /**
        * TODO: Send to SMS gateway OTP message
@@ -121,51 +116,49 @@ export default class UsersController {
    * @returns
    */
   static async login(req: Request, res: Response): Promise<object> {
-    try {
-      // get body
-      const body = req.body;
+    // try {
+    // get body
+    const body = req.body;
 
-      // validate body
-      const notValide = validate(body, Validation.login());
-      if (notValide)
-        return errRes(res, { msg: "Please check the data you send." });
+    // validate body
+    const notValide = validate(body, Validation.login());
+    if (notValide)
+      return errRes(res, { msg: `Please check the data you send.` });
 
-      // Get the user from DB
-      let user: any = await prisma.users.findMany({
-        where: {
-          active: true,
-          email: body.email,
-        },
+    // Get the user from DB
+    let [user]: any = await prisma.users.findMany({
+      where: {
+        active: true,
+        email: body.email,
+      },
+    });
+
+    // check f the user exists and active account
+    if (!user) return errRes(res, "User Not found Or User account Not active");
+
+    // check if OTP is correct
+    if (body.otp !== user.otp) errRes(res, "OTP not correct");
+
+    // compare password
+    let valide = await bcrypt.compare(body.password, user.password);
+    if (!valide)
+      return errRes(res, {
+        msg: "the password that you entered is wrong, please try again",
       });
 
-      // check if OTP is correct
-      if (body.otp !== user.otp) errRes(res, "User Not found");
-
-      // check f the user exists and active account
-      if (user.length !== 1) return errRes(res, "User Not found");
-      else if (user.length === 0)
-        return errRes(res, "User account Not active ");
-
-      // compare password
-      let valide = await bcrypt.compare(body.password, user.password);
-      if (!valide)
-        return errRes(res, {
-          msg: "the password that you entered is wrong, please try again",
-        });
-
-      // update data in DB
-      user = await prisma.admin.update({
-        where: { email: user.email },
-        data: {
-          verified: true,
-        },
-      });
-      // create the Token
-      let token = jwt.sign({ email: body.email }, CONFIG.jwtUserSecret);
-      return okRes(res, { token, verified: user.verified });
-    } catch (err) {
-      return errRes(res, `Something went wrong ${err}`);
-    }
+    // update data in DB
+    user = await prisma.users.update({
+      where: { email: user.email },
+      data: {
+        verified: true,
+      },
+    });
+    // create the Token
+    let token = jwt.sign({ email: body.email }, CONFIG.jwtUserSecret);
+    return okRes(res, { token, verified: user.verified });
+    // } catch (err) {
+    //   return errRes(res, `Something went wrong ${err}`);
+    // }
   }
   /**
    *

@@ -14,6 +14,9 @@ routes.post("/register", UsersController.register);
 // Login
 routes.post("/login", UsersController.login);
 
+//get One
+routes.get("/:id", UsersController.getOne);
+
 // Operation in users
 routes.post("/:id/update", usersMiddleware, UsersController.update);
 routes.post("/:id/delete", usersMiddleware, UsersController.activate);

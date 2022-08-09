@@ -19,6 +19,7 @@ export default async (req: any, res: any, next: any) => {
     let user: any = await prisma.users.findUnique({
       where: { email: payload.email },
     });
+
     // Add user data to request param
     req.user = user;
     return next();
