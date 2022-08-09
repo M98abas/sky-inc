@@ -8,7 +8,7 @@ routes.post("/register", SuperAdminController.register);
 
 // Login routes
 routes.post("/login", SuperAdminController.login);
-// routes.post("/:id/update", SuperAdminController.);
+routes.post("/:id/update", SuperAdminController.update);
 // routes.post("/:id/delete", SuperAdminController.activate);
 
 export default routes;

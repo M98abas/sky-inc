@@ -4,8 +4,11 @@ import { PrismaClient } from "@prisma/client";
 import adminRouter from "../routers/actionsRgLg/admin.router";
 import superAdminRouter from "../routers/actionsRgLg/superAdmin.router";
 import usersRoutes from "../routers/actionsRgLg/users.router";
+import constructorRoutes from "../routers/actionsRgLg/constructor.router";
 import categoryRoutes from "../routers/web/category.router";
 import subCategoryRoutes from "../routers/web/subcategory.router";
+import productsRoutes from "../routers/web/product.router";
+// import constructorRoutes from "../routers/web/product.router";
 
 const prisma = new PrismaClient();
 // const express = require("express");
@@ -35,6 +38,12 @@ async function main() {
 
   // Sub-Category Router
   app.use("/sub-category", subCategoryRoutes);
+
+  // Product Router
+  app.use("/product", productsRoutes);
+
+  // Product Router constructorRoutes
+  app.use("/constructor", constructorRoutes);
 
   // Listen => Port
   app.listen(port, () => {

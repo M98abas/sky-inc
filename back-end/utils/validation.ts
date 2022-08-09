@@ -64,4 +64,22 @@ export default class Validation {
       type: "string",
     },
   });
+  static products = (must = true) => ({
+    title: {
+      presence: must,
+      type: "string",
+    },
+    description: {
+      presence: must,
+      type: "string",
+    },
+    price: {
+      presence: must,
+      type: "number",
+    },
+    discount: {
+      presence: must,
+      type: "number",
+    },
+  });
 }

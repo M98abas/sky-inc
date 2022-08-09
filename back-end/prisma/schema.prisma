@@ -92,24 +92,34 @@ model Products{
   price Decimal @db.Decimal(9,2)
   discount Int @default(0)
   created_at DateTime @default(now())
-  images String
+  images Images[]
   constructorId Int
-  constructor Constructor @relation( fields:[constructorId], references: [id])
+  constructor ConstructorUser @relation( fields:[constructorId], references: [id])
   usersProducts UsersProducts[]
   subCategoryId Int
   subCategory SubCategory @relation( fields:[subCategoryId], references: [id])
+  active Boolean @default(true)
+
+}
+model Images{
+  id Int @id @default(autoincrement())
+  imageUrl String
+  productId Int
+  product Products @relation( fields:[productId], references: [id])
+  
 }
 
-model Constructor{
+model ConstructorUser{
   id Int @id @default(autoincrement())
   name String
-  email String
+  email String @unique
   password String
   address String
-  phone String
+  phoneNumber String
   products Products[]
   otp Int @default(111111)
-  gitHubProfile String
+  active Boolean @default(true)
+  verified Boolean @default(false)
   services Services[]
   socialMedia Social[]
 }
@@ -120,7 +130,7 @@ model Social{
   links String
   active Boolean @default(true)
   constructorId Int
-  constructor Constructor @relation( fields:[constructorId], references: [id])
+  constructor ConstructorUser @relation( fields:[constructorId], references: [id])
 
 }
 
@@ -130,7 +140,7 @@ model Services{
   description String
   projectLink String
   constructorId Int 
-  constructor Constructor @relation( fields:[constructorId], references: [id])
+  constructor ConstructorUser @relation( fields:[constructorId], references: [id])
   created_at DateTime @default(now())
 
 }
