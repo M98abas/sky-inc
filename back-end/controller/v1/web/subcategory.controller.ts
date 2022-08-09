@@ -67,7 +67,7 @@ export default class SubCategoryController {
       const data = await prisma.subCategory.findMany({
         where: { id: parseInt(id), active: true },
         include: {
-          services: true,
+          products: true,
         },
       });
 
@@ -97,7 +97,7 @@ export default class SubCategoryController {
       if (notValide) return errRes(res, "The Data is not valid!!");
 
       // check if there is data in DB similar
-      let data = await prisma.subCategory.findUnique({
+      let data: any = await prisma.subCategory.findUnique({
         where: {
           name: body.name,
         },
