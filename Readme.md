@@ -6,7 +6,7 @@
 
 A. Database 80%
 
-B. Back-end 20%
+B. Back-end 30%
 
 - Super Admin Authentication
 - Admin Authentication
@@ -17,17 +17,20 @@ B. Back-end 20%
 
 1. Category & subCategory:
 
-   - CRUD operations, Done.
+   - CRUD operations. [{Done}]
 
-   - Show all items in the category and subcategory.
+   - Show all items in the category and subcategory. [{Done}]
 
-2. Services Operation [ToDo]:
+2. Products Operation:
 
-   - CRUD operations
+   - CRUD operations [{Done}]
 
-3. Developer [ToDo}]:
+3. Cunstructor:
 
-   - CRUD operations
+   - CRUD operations [{Done}]
+
+   - Show All Products In Cunstructor 
+
 
    ***
 
