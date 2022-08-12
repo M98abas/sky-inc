@@ -112,6 +112,7 @@ model Images{
 model ConstructorUser{
   id Int @id @default(autoincrement())
   name String
+  profileImg String
   email String @unique
   password String
   address String
@@ -139,17 +140,20 @@ model Services{
   title String
   description String
   projectLink String
+  imageUrl String
   constructorId Int 
   constructor ConstructorUser @relation( fields:[constructorId], references: [id])
   created_at DateTime @default(now())
-
+  
 }
 
 model UsersProducts{
   id Int @id @default(autoincrement())
-  serviceId Int
-  service Products @relation( fields:[serviceId], references: [id])
+  productId Int
+  product Products @relation( fields:[productId], references: [id])
   usersId String 
   users Users @relation( fields:[usersId], references: [id])
-  
+  totalAmount Int
+  created_at DateTime @default(now())
+
 }

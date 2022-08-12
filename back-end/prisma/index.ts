@@ -8,10 +8,10 @@ import constructorRoutes from "../routers/actionsRgLg/constructor.router";
 import categoryRoutes from "../routers/web/category.router";
 import subCategoryRoutes from "../routers/web/subcategory.router";
 import productsRoutes from "../routers/web/product.router";
-// import constructorRoutes from "../routers/web/product.router";
+import checkOutRoutes from "../routers/web/checkOut.router";
 
+// Init Prisma from prismClient
 const prisma = new PrismaClient();
-// const express = require("express");
 
 async function main() {
   const app: any = express();
@@ -41,6 +41,9 @@ async function main() {
 
   // Product Router
   app.use("/product", productsRoutes);
+
+  // Product Router
+  app.use("/checkout", checkOutRoutes);
 
   // Product Router constructorRoutes
   app.use("/constructor", constructorRoutes);

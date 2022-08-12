@@ -82,4 +82,16 @@ export default class Validation {
       type: "number",
     },
   });
+  static checkOut = (must = true) => ({
+    amount: {
+      presence: must,
+      type: "number",
+    },
+  });
+  static checkOutItems = (must = true) => ({
+    amount: {
+      presence: must,
+      type: "number",
+    },
+  });
 }

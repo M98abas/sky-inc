@@ -1,15 +1,39 @@
 import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
-import { validate } from "validate.js";
-import { errRes, getOtp, okRes } from "../../../utils/util.services";
+import {  validate } from "validate.js";
 import Validation from "../../../utils/validation";
+import { errRes, getOtp, okRes } from "../../../utils/util.services";
 import bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";
 import CONFIG from "../../../config";
 
+// init prismClient
 const prisma = new PrismaClient();
 
 export default class ConstruactorsController {
+  /**
+   *
+   * @param req
+   * @param res
+   * @returns
+   */
+  static async getConstructorProducts(
+    req: Request,
+    res: Response
+  ): Promise<object> {
+    const email: any = req.headers.email;
+    const data: any = await prisma.constructorUser.findUnique({
+      where: { email },
+      select: {
+        email: true,
+        phoneNumber: true,
+        products: true,
+      },
+    });
+    if (data.length === 0) return errRes(res, "No products found");
+    return okRes(res, { data });
+  }
+
   /**
    *
    * @param req
@@ -93,6 +117,7 @@ export default class ConstruactorsController {
           name: body.name,
           email: body.email,
           password: body.password,
+          profileImg: body.profileImg,
           address: body.address,
           phoneNumber: body.phoneNumber,
           otp,
@@ -136,50 +161,85 @@ export default class ConstruactorsController {
    * @returns
    */
   static async login(req: Request, res: Response): Promise<object> {
-    // try {
-    // get body
-    const body = req.body;
+    try {
+      // get body
+      const body = req.body;
 
-    // validate body
-    const notValide = validate(body, Validation.login());
-    if (notValide)
-      return errRes(res, { msg: `Please check the data you send.` });
+      // validate body
+      const notValide = validate(body, Validation.login());
+      if (notValide)
+        return errRes(res, { msg: `Please check the data you send.` });
 
-    // Get the user from DB
-    let [user]: any = await prisma.constructorUser.findMany({
-      where: {
-        active: true,
-        email: body.email,
-      },
-    });
-
-    // check f the user exists and active account
-    if (!user) return errRes(res, "User Not found Or User account Not active");
-
-    // check if OTP is correct
-    if (body.otp !== user.otp) errRes(res, "OTP not correct");
-
-    // compare password
-    let valide = await bcrypt.compare(body.password, user.password);
-    if (!valide)
-      return errRes(res, {
-        msg: "the password that you entered is wrong, please try again",
+      // Get the user from DB
+      let [user]: any = await prisma.constructorUser.findMany({
+        where: {
+          active: true,
+          email: body.email,
+        },
       });
 
-    // update data in DB
-    user = await prisma.constructorUser.update({
-      where: { email: body.email },
-      data: {
-        verified: true,
-      },
-    });
-    // create the Token
-    let token = jwt.sign({ email: body.email }, CONFIG.jwtUserSecret);
-    return okRes(res, { token, verified: user.verified });
-    // } catch (err) {
-    //   return errRes(res, `Something went wrong ${err}`);
-    // }
+      // check f the user exists and active account
+      if (!user)
+        return errRes(res, "User Not found Or User account Not active");
+
+      // check if OTP is correct
+      if (body.otp !== user.otp) errRes(res, "OTP not correct");
+
+      // compare password
+      let valide = await bcrypt.compare(body.password, user.password);
+      if (!valide)
+        return errRes(res, {
+          msg: "the password that you entered is wrong, please try again",
+        });
+
+      // update data in DB
+      user = await prisma.constructorUser.update({
+        where: { email: body.email },
+        data: {
+          verified: true,
+        },
+      });
+      // create the Token
+      let token = jwt.sign({ email: body.email }, CONFIG.jwtUserSecret);
+      return okRes(res, { token, verified: user.verified });
+    } catch (err) {
+      return errRes(res, `Something went wrong ${err}`);
+    }
   }
+
+  /**
+   *
+   * @param req
+   * @param res
+   * @returns
+   */
+  static async addServices(req: any, res: any): Promise<object> {
+    try {
+      // get body
+      const body = req.body;
+      // check if there is data
+      if (!body) return errRes(res, "There is no data");
+      // get user
+      const user = req.user;
+      // create services
+      const services = body.services;
+      services.map(async (data: any) => {
+        await prisma.services.create({
+          data: {
+            title: data.title,
+            description: data.description,
+            projectLink: data.projectLink,
+            imageUrl: data.imageUrl,
+            constructorId: user.id,
+          },
+        });
+      });
+      return okRes(res, "Add Services Success");
+    } catch (err) {
+      return errRes(res, `Something went wrong ${err}`);
+    }
+  }
+
   /**
    *
    * @param req
@@ -213,6 +273,7 @@ export default class ConstruactorsController {
       return errRes(res, `Something went wrong ${err}`);
     }
   }
+
   /**
    *
    * @param req
