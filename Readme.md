@@ -4,9 +4,9 @@
 
 # Status of Project
 
-A. Database 80%
+A. Database 90%
 
-B. Back-end 30%
+B. Back-end 70%
 
 - Super Admin Authentication
 - Admin Authentication
@@ -29,15 +29,17 @@ B. Back-end 30%
 
    - CRUD operations [{Done}]
 
-   - Show All Products In Cunstructor 
-
+   - Show All Products In Cunstructor [{Done}]
 
    ***
 
 C. front-end 1%:
 
-- only UI/UX finished
+- Create Logo [{Done}]
+
+- UI/UX
 
   ***
 
 Comming soon...
+
