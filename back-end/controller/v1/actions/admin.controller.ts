@@ -6,6 +6,8 @@ import bcrypt from "bcrypt";
 import CONFIG from "../../../config";
 import * as jwt from "jsonwebtoken";
 import { PrismaClient } from "@prisma/client";
+import smsSend from "../../../utils/SMSOtp";
+
 const prisma = new PrismaClient();
 
 export default class AdminController {
@@ -56,11 +58,7 @@ export default class AdminController {
           },
         });
       }
-
-      /**
-       * TODO: Send to SMS gateway OTP message
-       * @param OTP numbers
-       * */
+      smsSend(`Your OTP is ${otp}`, user.phoneNumber);
 
       // make up registerToken
       let token = jwt.sign({ email: body.email }, CONFIG.jwtUserSecret);
@@ -73,7 +71,51 @@ export default class AdminController {
       return errRes(res, `Something went wrong ${err}`);
     }
   }
-  
+
+  /**
+   *
+   * @param req
+   * @param res
+   * @returns
+   */
+  static async validateOtp(req: any, res: any): Promise<object> {
+    // get OTP && User
+    const otp = parseInt(req.body.otp);
+    const user = req.user;
+
+    // validate otp
+    const notValided = validate(otp, Validation.otp());
+    if (notValided) return errRes(res, "Error");
+
+    if (user.otp !== otp) {
+      // generate new  otp and save it
+      const newOtp = getOtp();
+
+      await prisma.admin.update({
+        where: {
+          email: user.email,
+        },
+        data: {
+          otp: newOtp,
+        },
+      });
+      smsSend(`Your OTP is ${newOtp}`, user.phoneNumber);
+      return errRes(res, "Error Wrong OTP || we send to you new OTP");
+    }
+
+    // update to verify
+    await prisma.admin.update({
+      where: {
+        email: user.email,
+      },
+      data: {
+        verified: true,
+      },
+    });
+
+    return okRes(res, { msg: "All good" });
+  }
+
   /**
    *
    * @param req

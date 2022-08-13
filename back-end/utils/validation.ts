@@ -31,10 +31,6 @@ export default class Validation {
       presence: must,
       type: "string",
     },
-    otp: {
-      presence: must,
-      type: "number",
-    },
   });
   static superAdmin = (must = true) => ({
     name: {
@@ -90,6 +86,12 @@ export default class Validation {
   });
   static checkOutItems = (must = true) => ({
     amount: {
+      presence: must,
+      type: "number",
+    },
+  });
+  static otp = (must = true) => ({
+    otp: {
       presence: must,
       type: "number",
     },
