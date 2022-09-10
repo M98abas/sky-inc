@@ -9,6 +9,18 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export default class SuperAdminController {
+  static async get(req: Request, res: Response): Promise<object> {
+    try {
+      const data: any = await prisma.superAdmin.findMany();
+      if (data.length != 0) {
+        return okRes(res, { data });
+      }
+      return errRes(res, { msg: "There is even no data or no active users" });
+    } catch (err) {
+      return errRes(res, { msg: "Something went wrong", err });
+    }
+  }
+
   /**
    *
    * @param req
@@ -115,6 +127,55 @@ export default class SuperAdminController {
           email: body.email,
           password: body.password,
           otp: getOtp(),
+        },
+      });
+      return errRes(res, { data });
+    } catch (err) {
+      return errRes(res, `Something went wrong ${err}`);
+    }
+  }
+
+  /**
+   *
+   * @param req
+   * @param res
+   * @param
+   */
+  static async delete(req: Request, res: Response): Promise<object> {
+    try {
+      // get body data
+      const id: any = parseInt(req.params.id);
+
+      // update data
+      const data: any = await prisma.superAdmin.update({
+        where: { id },
+        data: {
+          active: false,
+        },
+      });
+      return errRes(res, { data });
+    } catch (err) {
+      return errRes(res, `Something went wrong ${err}`);
+    }
+  }
+
+  /**
+   *
+   * @param req
+   * @param res
+   * @param
+   */
+  static async activate(req: Request, res: Response): Promise<object> {
+    try {
+      // get body data
+      const id: any = parseInt(req.params.id);
+
+
+      // update data
+      const data: any = await prisma.superAdmin.update({
+        where: { id },
+        data: {
+          active: true,
         },
       });
       return errRes(res, { data });

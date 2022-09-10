@@ -13,7 +13,7 @@ export default async (req: any, res: any, next: any) => {
   try {
     // get payload
     let payload: any;
-    payload = jwt.verify(token, CONFIG.jwtUserSecret);
+    payload = jwt.verify(token, CONFIG.jwtUserLoginSecret);
 
     // Find the user and add to Request
     let user: any = await prisma.superAdmin.findUnique({

@@ -1,8 +1,8 @@
-const accountSid = "AccountSId";
+const accountSid = "ACcountSId";
 const authToken = "Token";
 // const client = require("twilio")
-import * as twilio from "twilio";
-const client = twilio(accountSid, authToken);
+import twilio from "twilio";
+const client:any = twilio(accountSid, authToken);
 
 export default async function (message: any, to: any) {
   client.messages
