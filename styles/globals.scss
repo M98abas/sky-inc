@@ -23,6 +23,10 @@ $SixthLightColor: #a4857d;
 //     rgba(103, 11, 6, 1) 99%
 //   );
 // }
+body {
+  position: relative;
+  overflow-x: hidden;
+}
 .container {
   width: 95vw;
   margin: auto;
@@ -92,15 +96,15 @@ $SixthLightColor: #a4857d;
     }
   }
 }
-.main {
-  display: flex;
-  position: relative;
-}
 
 .sidebar-container {
+  position: absolute;
+  left: 0;
+  top: 20;
+  // bottom: 0;
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 92.75vh;
   padding: 0;
   width: 80px;
   justify-content: center;
@@ -140,6 +144,7 @@ $SixthLightColor: #a4857d;
       justify-content: center;
       margin-top: 10px;
       &:hover {
+        border-radius: 30px;
         background-color: $fifthColors;
         a {
           color: rgb(34, 30, 30);
@@ -207,14 +212,17 @@ $SixthLightColor: #a4857d;
       display: flex;
       align-items: center;
       padding: 5px 2px;
+      // border: 2px solid rgb(70, 70, 70);
+
       img {
         width: 30px;
-        border: 2px solid black;
+        border: 2px solid rgb(70, 70, 70);
         border-right: none;
         border-top-left-radius: 10px;
         border-bottom-left-radius: 10px;
       }
       input {
+        border: 2px solid rgb(70, 70, 70);
         font-size: 16px;
         border-top-right-radius: 10px;
         border-bottom-right-radius: 10px;
@@ -227,17 +235,18 @@ $SixthLightColor: #a4857d;
 }
 
 .cards {
+  height: 80vh;
   display: grid;
-  grid-template-columns: repeat(auto-fill, 600px);
+  grid-template-columns: repeat(auto-fill, 620px);
   text-align: center;
   align-items: center;
   justify-content: center;
-  gap: 20px;
+  // gap: 10px;
   .card {
     background-color: white;
-    width: 270px;
-    height: 270px;
-    margin: auto;
+    width: 65%;
+    height: 73%;
+    // margin: auto;
     display: flex;
     flex-direction: column;
     text-align: center;
@@ -245,19 +254,93 @@ $SixthLightColor: #a4857d;
     justify-content: center;
     box-shadow: 2px 1px 5px #1d1d1da7;
     border-radius: 10px;
-    line-height: 5;
+    cursor: default;
     transition: 0.5s;
-
-    img {
+    .percentage {
       width: 100px;
       height: auto;
     }
     p {
-      font-size: 22px;
+      font-size: 26px;
+    }
+    .percentage {
+      font-size: 24px;
     }
     &:hover {
       transform: scale(1.15);
       box-shadow: 2px 1px 5px #1d1d1d45;
+      border-radius: 0;
+    }
+  }
+  .card:nth-child(1),
+  .card:nth-child(2) {
+    background-color: rgb(255, 119, 119);
+  }
+}
+
+.table-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  //  text-align: left;
+  width: 90vw;
+  margin: auto;
+  height: 70vh;
+  line-height: 4;
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: left;
+    width: 90%;
+    h1 {
+      color: #525252;
+    }
+    .links {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      font-size: 22px;
+      color: rgb(58, 58, 58);
+      span {
+        order: 2;
+      }
+    }
+  }
+  .table-container {
+    width: 90%;
+  }
+  .btn-container {
+    display: flex;
+    gap: 5px;
+    .btn-action {
+      display: flex;
+      justify-content: center;
+      gap: 5px;
+      align-items: center;
+    }
+  }
+}
+.sub-container {
+  width: 100%;
+  height: 85vh;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  .content {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    width: 100%;
+    img {
+      border-radius: 50%;
+      padding: 25px;
+      background-color: #000000c7;
+      margin: auto;
+      width: 200px;
+      height: auto;
     }
   }
 }

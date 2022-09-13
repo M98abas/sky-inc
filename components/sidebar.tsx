@@ -19,7 +19,7 @@ const Sidebar = () => {
         <li className="item nav-icon" onClick={handelClick}>
           <a className="link">
             <img
-              src={classActive ? "./icons/ximg.png" : "./icons/nav-bar.png"}
+              src={classActive ? "/icons/ximg.png" : "/icons/nav-bar.png"}
               alt="Home"
               className="logo"
             />
@@ -27,9 +27,9 @@ const Sidebar = () => {
           </a>
         </li>
         <li className="item">
-          <a href="#" className="link">
+          <a href="/" className="link">
             <img
-              src={classActive ? "./icons/homecol.png" : "./icons/home.png"}
+              src={classActive ? "/icons/homecol.png" : "/icons/home.png"}
               alt="Home"
               className="logo"
             />
@@ -38,9 +38,9 @@ const Sidebar = () => {
         </li>
 
         <li className="item">
-          <a href="#" className="link">
+          <a href="/users" className="link">
             <img
-              src={classActive ? "./icons/team.png" : "./icons/users.png"}
+              src={classActive ? "/icons/team.png" : "/icons/users.png"}
               alt="Users"
               className="logo"
             />
@@ -48,9 +48,9 @@ const Sidebar = () => {
           </a>
         </li>
         <li className="item">
-          <a href="#" className="link">
+          <a href="/admin" className="link">
             <img
-              src={classActive ? "./icons/admin col.png" : "./icons/admin.png"}
+              src={classActive ? "/icons/admin col.png" : "/icons/admin.png"}
               alt="Admins"
               className="logo"
             />
@@ -58,13 +58,27 @@ const Sidebar = () => {
           </a>
         </li>
         <li className="item">
-          <a href="#" className="link">
+          <a href="/products" className="link">
             <img
-              src={classActive ? "./icons/boxes.png" : "./icons/cubes.png"}
+              src={classActive ? "/icons/boxes.png" : "/icons/cubes.png"}
               alt="Products"
               className="logo"
             />
             <span className="content">Products</span>
+          </a>
+        </li>
+        <li className="item">
+          <a href="/products" className="link">
+            <img
+              src={
+                classActive
+                  ? "/icons/category_icon.png"
+                  : "/icons/category_icon_fill.png"
+              }
+              alt="Products"
+              className="logo"
+            />
+            <span className="content">Category</span>
           </a>
         </li>
       </ul>

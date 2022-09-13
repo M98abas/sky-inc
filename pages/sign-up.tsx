@@ -1,6 +1,6 @@
 import { Button, Form, Input, message } from "antd";
 import Image from "next/image";
-import { ApiSignUp } from "../api";
+import { ApiSignUp } from "../APIs/apiSignIn";
 import { useRouter } from "next/router";
 
 const login = () => {
