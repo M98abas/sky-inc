@@ -6,6 +6,7 @@ const routes = express.Router();
 
 // get routes
 routes.get("/", superAdminMiddleware, SuperAdminController.get);
+routes.get("/:id", superAdminMiddleware, SuperAdminController.getOne);
 
 // Register routes
 routes.post("/register", SuperAdminController.register);

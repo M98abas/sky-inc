@@ -17,10 +17,11 @@ export default class ProductsController {
     const data = await prisma.products.findMany({
       where: { active: true },
     });
+
     if (data.length === 0) return errRes(res, "No products found");
     return okRes(res, { data });
   }
-  
+
   /**
    *
    * @param req

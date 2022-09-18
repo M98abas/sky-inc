@@ -20,6 +20,30 @@ export default class SuperAdminController {
       return errRes(res, { msg: "Something went wrong", err });
     }
   }
+  /**
+   *
+   * @param req
+   * @param res
+   * @returns
+   */
+  static async getOne(req: Request, res: Response): Promise<object> {
+    try {
+      const id = parseInt(req.params.id);
+      if (id != NaN)
+        var data: any = await prisma.superAdmin.findUnique({
+          where: {
+            id,
+          },
+        });
+
+      if (data.length != 0) {
+        return okRes(res, { data });
+      }
+      return errRes(res, { msg: "There is even no data or no active users" });
+    } catch (err) {
+      return errRes(res, { msg: "Something went wrong", err });
+    }
+  }
 
   /**
    *
@@ -169,7 +193,6 @@ export default class SuperAdminController {
     try {
       // get body data
       const id: any = parseInt(req.params.id);
-
 
       // update data
       const data: any = await prisma.superAdmin.update({
