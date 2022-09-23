@@ -1,7 +1,7 @@
 export const URL = "http://localhost:4000";
 import Cookies from "js-cookie";
 
-export const getAdmin = async (callback: any) => {
+export const getUsers = async (callback: any) => {
   const token = await Cookies.get("token");
   if (token) {
     var myHeaders = new Headers();
@@ -11,10 +11,9 @@ export const getAdmin = async (callback: any) => {
       headers: myHeaders,
       redirect: "follow",
     };
-    fetch(`${URL}/super`, requestOptions)
+    fetch(`${URL}/user`, requestOptions)
       .then((response) => response.json())
       .then((result: any) => {
-        console.log(result);
         if (result) return callback(result);
         return callback(null, "No data found");
       })

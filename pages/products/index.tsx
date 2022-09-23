@@ -134,7 +134,7 @@ const products: NextPage = () => {
       <div className="container">
         <div className="table-content">
           <div className="header">
-            <h1>Super Admin</h1>
+            <h1>All produect</h1>
           </div>
           <div className="table-container">
             <Table
