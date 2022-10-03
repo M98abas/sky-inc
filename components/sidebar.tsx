@@ -1,6 +1,8 @@
 import { useState } from "react";
 
 const Sidebar = () => {
+  // const data = useTitleStore();
+
   const [classActive, setClassActive]: any = useState(false);
   const handelClick = () => {
     if (!classActive) setClassActive(true);
@@ -20,7 +22,7 @@ const Sidebar = () => {
           <a className="link">
             <img
               src={classActive ? "/icons/ximg.png" : "/icons/nav-bar.png"}
-              alt="Home"
+              alt="Menu"
               className="logo"
             />
             <span className="content">Menu</span>
@@ -68,7 +70,7 @@ const Sidebar = () => {
           </a>
         </li>
         <li className="item">
-          <a href="/products" className="link">
+          <a href="/category" className="link">
             <img
               src={
                 classActive
@@ -79,6 +81,20 @@ const Sidebar = () => {
               className="logo"
             />
             <span className="content">Category</span>
+          </a>
+        </li>
+        <li className="item">
+          <a href="/sub-category" className="link">
+            <img
+              src={
+                classActive
+                  ? "/icons/sub-category.svg"
+                  : "/icons/sub-category.png"
+              }
+              alt="Products"
+              className="logo"
+            />
+            <span className="content">Sub-Category</span>
           </a>
         </li>
       </ul>

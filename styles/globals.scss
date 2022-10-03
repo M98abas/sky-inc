@@ -297,15 +297,43 @@ body {
     h1 {
       color: #525252;
     }
+    .add-new-btn {
+      border-radius: 10px;
+    }
     .links {
       display: flex;
       gap: 10px;
       align-items: center;
-      font-size: 22px;
+      font-size: 18px;
       color: rgb(58, 58, 58);
+      // width: 200px;
+      // margin: auto;
       span {
         order: 2;
       }
+      // .content-arrows {
+      //   display: flex;
+      //   gap: 5px;
+      //   font-size: 22px;
+      //   span {
+      //     transform: translateX(-100%);
+      //   }
+      //   &:hover {
+      //     display: flex;
+      //     span {
+      //       &:nth-child(0) {
+      //         transition: 2s;
+      //       }
+      //       &:nth-child(1) {
+      //         transition: 3s;
+      //       }
+      //       &:nth-child(2) {
+      //         transition: 4s;
+      //       }
+      //       transform: translateX(0);
+      //     }
+      //   }
+      // }
     }
   }
   .table-container {
@@ -343,4 +371,18 @@ body {
       height: auto;
     }
   }
+}
+.spin-container {
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  top: 50%;
+  bottom: 50%;
+  right: 50%;
+  left: 50%;
+}
+
+.progress-bar {
+  z-index: 999;
 }

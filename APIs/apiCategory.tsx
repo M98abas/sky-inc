@@ -1,7 +1,7 @@
 export const URL = "http://localhost:4000";
 import Cookies from "js-cookie";
 
-export const getProduct = async (callback: any) => {
+export const getCategory = async (callback: any) => {
   const token = await Cookies.get("token");
   if (token) {
     var myHeaders = new Headers();
@@ -11,7 +11,7 @@ export const getProduct = async (callback: any) => {
       headers: myHeaders,
       redirect: "follow",
     };
-    fetch(`${URL}/product`, requestOptions)
+    fetch(`${URL}/category`, requestOptions)
       .then((response) => response.json())
       .then((result: any) => {
         if (result) return callback(result);
@@ -20,7 +20,7 @@ export const getProduct = async (callback: any) => {
       .catch((error: any) => callback(error));
   }
 };
-export const getOneProducts = async (id: any, callback: any) => {
+export const getOneCategory = async (id: any, callback: any) => {
   const token = await Cookies.get("token");
   if (token) {
     var myHeaders = new Headers();

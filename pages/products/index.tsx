@@ -1,11 +1,10 @@
-import { Button, message, Table } from "antd";
+import { Button, message, Spin, Table } from "antd";
 import Cookies from "js-cookie";
 import moment from "moment";
 import type { NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { IoIosAddCircle } from "react-icons/io";
 import Navbar from "../../components/Navbar";
 import Sidebar from "../../components/sidebar";
 import { AiFillDelete, AiFillEdit } from "react-icons/ai";
@@ -18,7 +17,7 @@ const products: NextPage = () => {
   const router = useRouter();
   useEffect(() => {
     getProduct((data: any, error: any) => {
-      if (error) return message.error(error);
+      if (data.errMsg) return message.error(data.errMsg);
       setData(data.data);
     });
   }, [router]);
@@ -75,13 +74,23 @@ const products: NextPage = () => {
       render: (data: any) => <Link href={`/admin/${data}`}>{data}</Link>,
     },
     {
-      title: "Name",
-      dataIndex: "name",
+      title: "Title",
+      dataIndex: "title",
       render: (data: any) => <p>{data}</p>,
     },
     {
-      title: "Email",
-      dataIndex: "email",
+      title: "Description",
+      dataIndex: "description",
+      render: (data: any) => <p>{data}</p>,
+    },
+    {
+      title: "Price",
+      dataIndex: "price",
+      render: (data: any) => <p>{data}</p>,
+    },
+    {
+      title: "Discount",
+      dataIndex: "discount",
       render: (data: any) => <p>{data}</p>,
     },
     {
@@ -104,14 +113,6 @@ const products: NextPage = () => {
               >
                 <AiFillDelete /> Delete
               </Button>
-
-              <Button
-                onClick={() => router.push(`/${row.id}`)}
-                type="primary"
-                className="btn-action"
-              >
-                <AiFillEdit /> Edit
-              </Button>
             </>
           ) : (
             <Button
@@ -129,26 +130,34 @@ const products: NextPage = () => {
 
   return (
     <>
-      <Navbar />
-      <Sidebar />
-      <div className="container">
-        <div className="table-content">
-          <div className="header">
-            <h1>All produect</h1>
+      {data ? (
+        <>
+          <Navbar />
+          <Sidebar />
+          <div className="container">
+            <div className="table-content">
+              <div className="header">
+                <h1>All produect</h1>
+              </div>
+              <div className="table-container">
+                <Table
+                  scroll={{ x: "700px" }}
+                  pagination={false}
+                  size="small"
+                  rowKey={(record: any) => record.id}
+                  className="table"
+                  columns={columns}
+                  dataSource={data}
+                />
+              </div>
+            </div>
           </div>
-          <div className="table-container">
-            <Table
-              scroll={{ x: "700px" }}
-              pagination={false}
-              size="small"
-              rowKey={(record: any) => record.id}
-              className="table"
-              columns={columns}
-              dataSource={data}
-            />
-          </div>
+        </>
+      ) : (
+        <div className="spin-container">
+          <Spin size="large" />
         </div>
-      </div>
+      )}
     </>
   );
 };

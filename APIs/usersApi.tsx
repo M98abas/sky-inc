@@ -20,7 +20,7 @@ export const getUsers = async (callback: any) => {
       .catch((error: any) => callback(error));
   }
 };
-export const getOneAdmin = async (id: any, callback: any) => {
+export const getOneUser = async (id: any, callback: any) => {
   const token = await Cookies.get("token");
   if (token) {
     var myHeaders = new Headers();

@@ -1,12 +1,15 @@
 import type { NextPage } from "next";
+import { useState } from "react";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/sidebar";
+import useTitleStore from "../state";
 
 const Home: NextPage = () => {
+  // const [data, setData]: any = useState();
+  // setData(() =>useTitleStore("ar"))
   return (
     <>
       <Navbar />
-      {/* <div className="main"> */}
       <Sidebar />
       <div className="container">
         <div className="cards">
@@ -30,7 +33,6 @@ const Home: NextPage = () => {
             <p className="title">Number of usage</p>
           </div>
         </div>
-        {/* </div> */}
       </div>
     </>
   );

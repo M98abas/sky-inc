@@ -31,7 +31,7 @@ const users: NextPage = () => {
       redirect: "follow",
     };
 
-    fetch(`${URL}/super/delete/${row.id}`, requestOptions)
+    fetch(`${URL}/user/delete/${row.id}`, requestOptions)
       .then((response) => response.json())
       .then((result: any) => {
         message.success("The Item Delete was successfully");
@@ -55,7 +55,7 @@ const users: NextPage = () => {
       redirect: "follow",
     };
 
-    fetch(`${URL}/super/active/${row.id}`, requestOptions)
+    fetch(`${URL}/user/active/${row.id}`, requestOptions)
       .then((response) => response.json())
       .then((result: any) => {
         message.success("The Item Delete was successfully");
@@ -68,7 +68,7 @@ const users: NextPage = () => {
     {
       title: "ID",
       dataIndex: "id",
-      render: (data: any) => <Link href={`/admin/${data}`}>{data}</Link>,
+      render: (data: any) => <Link href={`/user/${data}`}>{data}</Link>,
     },
     {
       title: "Name",
@@ -79,6 +79,16 @@ const users: NextPage = () => {
       title: "Email",
       dataIndex: "email",
       render: (data: any) => <p>{data}</p>,
+    },
+    {
+      title: "Address",
+      dataIndex: "address",
+      render: (data: any) => moment(data).format("DD/MM/yyyy, hh:mm A"),
+    },
+    {
+      title: "PhoneNumber",
+      dataIndex: "phoneNumber",
+      render: (data: any) => moment(data).format("DD/MM/yyyy, hh:mm A"),
     },
     {
       title: "Created at",
@@ -122,6 +132,7 @@ const users: NextPage = () => {
       ),
     },
   ];
+
   return (
     <>
       <Navbar />

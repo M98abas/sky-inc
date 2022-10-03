@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import Cookies from "js-cookie";
 
 const progress = new ProgressBar({
-  size: 5,
+  size: 10,
   color: "#000",
   className: "progress-bar",
   delay: 1000,
