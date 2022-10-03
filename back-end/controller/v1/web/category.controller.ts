@@ -16,10 +16,7 @@ export default class CategoryController {
   static async get(req: Request, res: Response): Promise<object> {
     try {
       // get all data from DB
-      const data = await prisma.category.findMany({
-        where: { active: true },
-      });
-
+      const data = await prisma.category.findMany();
       // Check if there is no Data
       if (data.length === 0) return errRes(res, "There is no data exists");
 
@@ -181,6 +178,7 @@ export default class CategoryController {
     try {
       // Get id
       const id = req.params.id;
+      console.log(id);
 
       // check if there is data in DB similar => ID
       let data = await prisma.category.findUnique({
@@ -197,6 +195,43 @@ export default class CategoryController {
           },
           data: {
             active: false,
+          },
+        });
+      }
+
+      // Return OKResponse
+      return okRes(res, { msg: "Data Saved successfully" });
+    } catch (err) {
+      return errRes(res, `Error : ${err}`);
+    }
+  }
+
+  /**
+   *
+   * @param req
+   * @param res
+   * @returns
+   */
+  static async activate(req: Request, res: Response): Promise<object> {
+    try {
+      // Get id
+      const id = req.params.id;
+
+      // check if there is data in DB similar => ID
+      let data = await prisma.category.findUnique({
+        where: {
+          id: parseInt(id),
+        },
+      });
+      if (!data) return errRes(res, `No Category Found `);
+      else {
+        // Update active from True => false
+        data = await prisma.category.update({
+          where: {
+            id: parseInt(id),
+          },
+          data: {
+            active: true,
           },
         });
       }

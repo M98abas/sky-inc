@@ -20,7 +20,17 @@ export default class UsersController {
 
   static async get(req: Request, res: Response): Promise<object> {
     // get all Users
-    const data = await prisma.users.findMany();
+    const data = await prisma.users.findMany({
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        address: true,
+        phoneNumber: true,
+        active: true,
+        created_at: true,
+      },
+    });
     // check if there is data
     if (data.length !== 0) return errRes(res, { msg: "There is no data" });
     return okRes(res, { data });
@@ -259,6 +269,32 @@ export default class UsersController {
           active: body.active,
           verified: body.verified,
           otp: getOtp(),
+        },
+      });
+      return errRes(res, { data });
+    } catch (err) {
+      return errRes(res, `Something went wrong ${err}`);
+    }
+  }
+  /**
+   *
+   * @param req
+   * @param res
+   * @param
+   */
+  static async delete(req: Request, res: Response): Promise<object> {
+    try {
+      // get body data
+      const body = req.body;
+      const id = req.params.id;
+      // validate data
+      const notValide = validate(body, Validation.register(false));
+      if (notValide) return errRes(res, { msg: "Data not valid" });
+      // update data
+      const data: any = await prisma.users.update({
+        where: { id },
+        data: {
+          active: false,
         },
       });
       return errRes(res, { data });

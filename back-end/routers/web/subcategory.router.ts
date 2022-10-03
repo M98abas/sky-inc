@@ -6,7 +6,7 @@ const routes = express.Router();
 routes.get("/", SubCategoryController.get);
 
 // All Items in SubCategory Route
-routes.get("/:id/items", SubCategoryController.allServices)
+routes.get("/:id/items", SubCategoryController.allServices);
 
 // Get One data
 routes.get("/:id", SubCategoryController.getOne);
@@ -15,9 +15,12 @@ routes.get("/:id", SubCategoryController.getOne);
 routes.post("/", SubCategoryController.addNew);
 
 // Update Route
-routes.post("/:id/update", SubCategoryController.update);
+routes.post("/update/:id", SubCategoryController.update);
 
 // Delete Route
-routes.post("/:id/delete", SubCategoryController.delete);
+routes.post("/delete/:id", SubCategoryController.delete);
 
+// Delete Route
+routes.post("/activate/:id", SubCategoryController.activate);
+    
 export default routes;

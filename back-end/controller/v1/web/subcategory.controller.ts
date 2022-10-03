@@ -16,9 +16,8 @@ export default class SubCategoryController {
   static async get(req: Request, res: Response): Promise<object> {
     try {
       // get all data from DB
-      const data = await prisma.subCategory.findMany({
-        where: { active: true },
-      });
+      const data = await prisma.subCategory.findMany();
+      // console.log(data);
 
       // Check if there is no Data
       if (data.length === 0) return errRes(res, "There is no data exists");
@@ -91,9 +90,11 @@ export default class SubCategoryController {
     try {
       // Get body
       const body = req.body;
+      console.log(body);
 
       // Validate data
       const notValide = validate(body, Validation.category());
+      console.log(notValide);
       if (notValide) return errRes(res, "The Data is not valid!!");
 
       // check if there is data in DB similar
@@ -111,7 +112,7 @@ export default class SubCategoryController {
             name: body.name,
             description: body.description,
             imgUrl: body.imgUrl,
-            categoryId: body.categoryId,
+            categoryId: parseInt(body.categoryId),
           },
         });
       }
@@ -194,6 +195,44 @@ export default class SubCategoryController {
           },
           data: {
             active: false,
+          },
+        });
+      }
+
+      // Return OKResponse
+      return okRes(res, { msg: "Data Saved successfully" });
+    } catch (err) {
+      return errRes(res, `Error : ${err}`);
+    }
+  }
+
+  
+  /**
+   *
+   * @param req
+   * @param res
+   * @returns
+   */
+   static async activate(req: Request, res: Response): Promise<object> {
+    try {
+      // Get id
+      const id = req.params.id;
+
+      // check if there is data in DB similar => ID
+      let data = await prisma.subCategory.findUnique({
+        where: {
+          id: parseInt(id),
+        },
+      });
+      if (!data) return errRes(res, `No Data Found `);
+      else {
+        // Update active from True => false
+        data = await prisma.subCategory.update({
+          where: {
+            id: parseInt(id),
+          },
+          data: {
+            active: true,
           },
         });
       }

@@ -17,9 +17,12 @@ routes.get("/:id", adminMiddleware, CategoryController.getOne);
 routes.post("/", adminMiddleware, CategoryController.addNew);
 
 // Update Category Routes
-routes.post("/:id/update", adminMiddleware, CategoryController.update);
+routes.post("/update/:id", adminMiddleware, CategoryController.update);
 
 // Delete Category Routes
-routes.post("/:id/delete", adminMiddleware, CategoryController.delete);
+routes.post("/delete/:id", adminMiddleware, CategoryController.delete);
+
+// Delete Category Routes
+routes.post("/activate/:id", adminMiddleware, CategoryController.activate);
 
 export default routes;

@@ -18,7 +18,8 @@ routes.post("/login", UsersController.login);
 routes.get("/:id", UsersController.getOne);
 
 // Operation in users
-routes.post("/:id/update", usersMiddleware, UsersController.update);
-routes.post("/:id/delete", usersMiddleware, UsersController.activate);
+routes.post("/update/:id", usersMiddleware, UsersController.update);
+routes.post("/delete/:id", usersMiddleware, UsersController.delete);
+routes.post("/active/:id", usersMiddleware, UsersController.activate);
 
 export default routes;

@@ -32,7 +32,7 @@ export default class ProductsController {
     const data = await prisma.products.findMany({
       where: { active: true, id: parseInt(req.params.id) },
     });
-    if (data.length === 0) return errRes(res, "No products found");
+    if (data.length === 0) return errRes(res, "No products found"); 
     return okRes(res, { data });
   }
   /**

@@ -48,7 +48,7 @@ model Users{
   active Boolean @default(true)
   usersproducts UsersProducts[]
   created_at DateTime @default(now())
-  updated_at DateTime @default(now())
+  updated_at DateTime @updatedAt
   payment Payments[] 
 }
 

@@ -20,11 +20,11 @@ export default async (req: any, res: any, next: any) => {
     let user: any = await prisma.admin.findUnique({
       where: { email: payload.email },
     });
-    if (user.length === 0) {
+    if (!user) {
       user = await prisma.superAdmin.findUnique({
         where: { email: payload.email },
       });
-      if (user.length === 0) return errRes(res, "You not allowed");
+      if (!user) return errRes(res, "You not allowed");
     }
     // Add user data to request param
     req.user = user;
