@@ -217,7 +217,7 @@ const category: NextPage = () => {
   };
   return (
     <>
-      {data ? (
+      {data || loading ? (
         <>
           <Navbar />
           <Sidebar />

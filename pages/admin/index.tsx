@@ -20,7 +20,8 @@ const users: NextPage = () => {
       setData(data.data);
     });
   }, [router]);
-
+  console.log(data);
+  
   const handelClickDelete = async (row: any) => {
     const token: any = await Cookies.get("token");
     var myHeaders = new Headers();
