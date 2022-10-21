@@ -9,4 +9,5 @@ routes.post("/register", superAdminMiddleware, AdminController.register);
 //register login
 routes.post("/login", AdminController.login);
 
+routes.get('/',superAdminMiddleware, AdminController.getAll)
 export default routes;

@@ -17,6 +17,24 @@ export default class AdminController {
    * @param res
    * @returns
    */
+  static async getAll(req: Request, res: Response): Promise<object> {
+    const data: any = await prisma.admin.findMany({
+      where: {
+        active: true,
+      },
+    });
+
+    if (data.length === 0)
+      return errRes(res, { msg: "There is no Data found!!!" });
+    return okRes(res, data, 200);
+  }
+
+  /**
+   *
+   * @param req
+   * @param res
+   * @returns
+   */
   static async register(req: Request, res: Response): Promise<object> {
     try {
       // get body
